@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff69b4, #ff99cc);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.5;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 90%;
+            width: 400px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: modalFloat 3s ease-in-out infinite;
+        }
+
+        .modal h2 {
+            color: #fff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 12px 30px;
+            margin: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .cake {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            font-size: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .knife-emoji {
+            font-size: 3rem;
+            position: absolute;
+            top: 110px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .knife-cutting {
+            animation: knifeCut 1s forwards;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes modalFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes knifeCut {
+            0% { transform: translateX(0) rotate(0); }
+            50% { transform: translateX(-40px) rotate(-45deg); }
+            100% { transform: translateX(-80px) rotate(-90deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="https://raw.githubusercontent.com/omkar111196/happy_birthday/refs/heads/main/uploads/happy-birthday-audio.mp3" type="audio/mp3" />
+    </audio>
+    <div class="background-elements"></div>
+    <div class="container">
+        <div id="current-modal" class="modal animate__animated animate__fadeIn">
+            <h2>✨ It's Your Special Day! ✨</h2>
+            <button class="btn" onclick="startSequence()">Begin the Magic</button>
+        </div>
+    </div>
+
+    <script>
+        const emojis = ['🎈', '✨', '💫', '💝', '🌟', '🎀', '💖', '🎉'];
+        const backgroundElements = document.querySelector('.background-elements');
+        const bgMusic = document.getElementById('bgMusic');
+
+        function createBackgroundElements() {
+            for(let i = 0; i < 80; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.style.left = `${Math.random() * 100}vw`;
+                emoji.style.top = `${Math.random() * 100}vh`;
+                emoji.style.animationDelay = `${Math.random() * 5}s`;
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                backgroundElements.appendChild(emoji);
+            }
+        }
+
+        createBackgroundElements();
+
+        let currentStep = 0;
+        const messages = [
+            "I wanted to make something as special as you are... 💝",
+            "Would you like to see your surprise? ✨",
+            "3... 💫",
+            "2... 🌟",
+            "1... 💖",
+            "Let the magic begin! ✨",
+            "A special message for someone extraordinary... 💝",
+            "Wishing you a day as wonderful as you! 🎉"
+        ];
+
+        function startSequence() {
+            bgMusic.play();
+            currentStep++;
+            showModal(messages[0], true, "Continue", showYesNoPrompt);
+        }
+
+        function showModal(content, hasButton = true, buttonText = 'Continue', onClick = null) {
+            const existingModal = document.getElementById('current-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            const modal = document.createElement('div');
+            modal.id = 'current-modal';
+            modal.className = 'modal animate__animated animate__fadeIn';
+            modal.innerHTML = `<h2>${content}</h2>`;
+
+            if (hasButton) {
+                const button = document.createElement('button');
+                button.className = 'btn';
+                button.textContent = buttonText;
+                button.onclick = onClick || (() => nextStep());
+                modal.appendChild(button);
+            }
+
+            document.querySelector('.container').appendChild(modal);
+        }
+
+        function showYesNoPrompt() {
+            showModal(messages[1], true, "Yes", startCountdown);
+            const modal = document.getElementById('current-modal');
+            const noBtn = document.createElement('button');
+            noBtn.className = 'btn';
+            noBtn.textContent = 'Not Yet';
+            noBtn.onclick = () => showPleaseSeeSurprise();
+            modal.appendChild(noBtn);
+        }
+
+        function showPleaseSeeSurprise() {
+            showModal("Please see the surprise, it's made with love! 🎁", true, "Okay", showYesNoPrompt);
+        }
+
+        function startCountdown() {
+            let count = 3;
+            function countdown() {
+                if (count > 0) {
+                    showModal(count + "...", false);
+                    count--;
+                    setTimeout(countdown, 1000);
+                } else {
+                    showHappyBirthday();
+                }
+            }
+            countdown();
+        }
+
+        function showHappyBirthday() {
+            showModal("Happy Birthday Madamji! 🎉✨", true, "Let's Cut the Cake!", showCake);
+        }
+
+        function showCake() {
+            const modal = document.getElementById('current-modal');
+            modal.innerHTML = `
+                <div class="cake">
+                    🎂
+                    <div class="knife-emoji" onclick="cutCake()">🔪</div>
+                </div>
+                <h3>Click on the knife to cut the cake!</h3>
+            `;
+        }
+
+        function cutCake() {
+            const knife = document.querySelector('.knife-emoji');
+            knife.classList.add('knife-cutting');
+            setTimeout(() => showFinalMessage(), 1000);
+        }
+
+        function showFinalMessage() {
+            showModal(`
+                Dear Madamji,
+                May your day be filled with joy, success, and endless possibilities.
+                Thank you for being an inspiration! 
+                💖✨🎉
+            `, true, "Celebrate Again!", () => window.location.reload());
+        }
+
+        function nextStep() {
+            currentStep++;
+            switch(currentStep) {
+                case 1:
+                    showYesNoPrompt();
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
